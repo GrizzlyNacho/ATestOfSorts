@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>A Test of Sorts</title>
+		<script src="app.js"></script>
+		<script src="Util.js"></script>
+		<script src="BubbleSort.js"></script>
+		<script type="text/javascript">
+			window.onload = function onWindowLoad() {
+				 window.sortInstance = new SortManager();
+			};
+		</script>
+	</head>
+
+	<body>
+		<h1>A Test of Sorts</h1>
+		<canvas id="sortCanvas" height="500" width="800"></canvas>
+		<button onclick="sortInstance.startSort(BubbleSort)">Bubble</button>
+	</body>
+
+</html>
