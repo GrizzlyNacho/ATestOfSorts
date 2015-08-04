@@ -7,6 +7,7 @@
 		<script src="app.js"></script>
 		<script src="sorts/SortAlgorithm.js"></script>
 		<script src="sorts/BubbleSort.js"></script>
+		<script src="sorts/InsertionSort.js"></script>
 		<script type="text/javascript">
 			window.onload = function onWindowLoad() {
 				 window.sortInstance = new SortManager();
@@ -18,6 +19,7 @@
 		<h1>A Test of Sorts</h1>
 		<canvas id="sortCanvas" height="500" width="800"></canvas>
 		<button onclick="sortInstance.startSort(BubbleSort)">Bubble</button>
+		<button onclick="sortInstance.startSort(InsertionSort)">Insertion</button>
 	</body>
 
 </html>
