@@ -2,11 +2,11 @@
  * A class to manage and draw the data set.
  */
 var SortManager = function createSortManager() {
+    this.__util = new Util();
     this.__numberSet = [];
     this.__timeDelay = 10;
     this.__arraySize = 25;
     this.__canvasReference = document.getElementById("sortCanvas");
-    this.__canvasContext = this.__canvasReference.getContext("2d");
     this.scrambleList();
     this.drawState();
 };
@@ -35,31 +35,63 @@ SortManager.prototype.scrambleList = function scrambleList() {
  * @param @optional {Function} callback
  */
 SortManager.prototype.drawState = function drawState(callback) {
-    this.__canvasContext.clearRect(0, 0,
+    var canvasContext = this.__canvasReference.getContext("2d");
+    canvasContext.clearRect(0, 0,
         this.__canvasReference.width, this.__canvasReference.height);
 
-    this.__canvasContext.fillStyle = "#DCDCDC";
-    this.__canvasContext.fillRect(0, 0,
+    canvasContext.fillStyle = "#DCDCDC";
+    canvasContext.fillRect(0, 0,
         this.__canvasReference.width, this.__canvasReference.height);
-
-    // Determine the vertical offset.
-    // We don't want a line along the top or bottom edge, so we add 2
-    var vOffset = this.__canvasReference.height / (this.__arraySize + 2);
-
-    this.__canvasContext.beginPath();
-    for (var idxLine = 0; idxLine < this.__arraySize; idxLine++) {
-        var y = idxLine * vOffset + vOffset;
-        this.__canvasContext.moveTo(0, y);
-        this.__canvasContext.lineTo(
-            this.__canvasReference.width * this.__numberSet[idxLine], y);
-    }
-    this.__canvasContext.closePath();
-
-    this.__canvasContext.strokeStyle = "#303030";
-    this.__canvasContext.stroke();
+    canvasContext.lineWidth = 3;
+    this.__drawArrayInCanvas(this.__canvasReference, this.__numberSet, {});
 
     if (callback) {
         callback();
+    }
+};
+
+/**
+ * Draw an array state in canvas
+ * @param {DOM} canvasReference
+ * @param {Array} arrData
+ * @param {Object} props
+ *        {Array} alteredIndices
+ *        {Number} width
+ *        {Number} offsetLeft
+ */
+SortManager.prototype.__drawArrayInCanvas =
+        function __drawArrayInCanvas(canvasRef, arrData, props) {
+
+    var canvasCtx = canvasRef.getContext("2d");
+    var arraySize = arrData.length;
+    // Populate with defaults if optional props are not present
+    props = this.__util.shallowMerge(
+        {
+            alteredIndices: [],
+            width: canvasRef.width,
+            offsetLeft: 0,
+        },
+        props
+    );
+
+    // Determine the vertical offset.
+    // We don't want a line along the top or bottom edge, so we add 2
+    var vOffset = canvasRef.height / (arraySize + 2);
+    for (var idxLine = 0; idxLine < arraySize; idxLine++) {
+        canvasCtx.beginPath();
+        var y = idxLine * vOffset + vOffset;
+        canvasCtx.moveTo(props.offsetLeft, y);
+        canvasCtx.lineTo(
+            props.offsetLeft + props.width * arrData[idxLine], y);
+        canvasCtx.closePath();
+
+        if (props.alteredIndices && props.alteredIndices.length > 0
+            && props.alteredIndices.indexOf(idxLine) >= 0) {
+            canvasCtx.strokeStyle = "#006400";
+        } else {
+            canvasCtx.strokeStyle = "#303030";
+        }
+        canvasCtx.stroke();
     }
 };
 
