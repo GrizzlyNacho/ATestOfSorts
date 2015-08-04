@@ -4,7 +4,7 @@
 var SortManager = function createSortManager() {
     this.__util = new Util();
     this.__numberSet = [];
-    this.__timeDelay = 25;
+    this.__timeDelay = 200;
     this.__arraySize = 25;
     this.__canvasReference = document.getElementById("sortCanvas");
     this.scrambleList();
@@ -53,7 +53,7 @@ SortManager.prototype.drawState = function drawState(arrDrawSet, callback) {
     for(var idxDrawSet = 0; idxDrawSet < numberOfSets; idxDrawSet++) {
         var currentSet = arrDrawSet[idxDrawSet];
         var blockSize = this.__canvasReference.width / numberOfSets;
-        this.__drawArrayInCanvas(this.__canvasReference, this.__numberSet, {
+        this.__drawArrayInCanvas(this.__canvasReference, currentSet.numberSet, {
             offsetLeft: idxDrawSet * blockSize,
             width: blockSize,
             alteredIndices: currentSet.alteredIndices ? currentSet.alteredIndices : [],
