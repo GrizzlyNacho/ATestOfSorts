@@ -28,6 +28,12 @@ BubbleSort.prototype.step = function step() {
             console.log("Bubble Sort terminated after "
                 + (this.__iterationCount * this.__maxLength + this.__position)
                 + " steps.");
+            // Draw the last state
+            this.__draw(
+                [{
+                    numberSet: this.__numberSet,
+                }]
+            );
             return;
         }
         this.__position = 0;
@@ -44,7 +50,13 @@ BubbleSort.prototype.step = function step() {
 
     this.__position += 1;
     if (changeOccurred) {
-        this.__draw(this.step.bind(this));
+        this.__draw(
+            [{
+                numberSet: this.__numberSet,
+                alteredIndices: [this.__position, this.__position+1],
+            }],
+            this.step.bind(this)
+        );
     } else {
         setTimeout(this.step.bind(this), 0);
     }

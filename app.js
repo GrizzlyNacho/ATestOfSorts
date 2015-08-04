@@ -4,11 +4,11 @@
 var SortManager = function createSortManager() {
     this.__util = new Util();
     this.__numberSet = [];
-    this.__timeDelay = 10;
+    this.__timeDelay = 25;
     this.__arraySize = 25;
     this.__canvasReference = document.getElementById("sortCanvas");
     this.scrambleList();
-    this.drawState();
+    this.drawState([{numberSet: this.__numberSet}]);
 };
 
 /**
@@ -32,9 +32,14 @@ SortManager.prototype.scrambleList = function scrambleList() {
 
 /**
  * Draw the current state of the data set and then call the callback
+ * @param {Array} arrDrawSet - An array of drawable objects. Prototype below.
+ *        DrawableDataset = {
+ *           {Array} numberSet
+ *           {Array} alteredIndices
+ *        }
  * @param @optional {Function} callback
  */
-SortManager.prototype.drawState = function drawState(callback) {
+SortManager.prototype.drawState = function drawState(arrDrawSet, callback) {
     var canvasContext = this.__canvasReference.getContext("2d");
     canvasContext.clearRect(0, 0,
         this.__canvasReference.width, this.__canvasReference.height);
@@ -43,7 +48,17 @@ SortManager.prototype.drawState = function drawState(callback) {
     canvasContext.fillRect(0, 0,
         this.__canvasReference.width, this.__canvasReference.height);
     canvasContext.lineWidth = 3;
-    this.__drawArrayInCanvas(this.__canvasReference, this.__numberSet, {});
+
+    var numberOfSets = arrDrawSet.length;
+    for(var idxDrawSet = 0; idxDrawSet < numberOfSets; idxDrawSet++) {
+        var currentSet = arrDrawSet[idxDrawSet];
+        var blockSize = this.__canvasReference.width / numberOfSets;
+        this.__drawArrayInCanvas(this.__canvasReference, this.__numberSet, {
+            offsetLeft: idxDrawSet * blockSize,
+            width: blockSize,
+            alteredIndices: currentSet.alteredIndices ? currentSet.alteredIndices : [],
+        });
+    }
 
     if (callback) {
         callback();
@@ -87,7 +102,7 @@ SortManager.prototype.__drawArrayInCanvas =
 
         if (props.alteredIndices && props.alteredIndices.length > 0
             && props.alteredIndices.indexOf(idxLine) >= 0) {
-            canvasCtx.strokeStyle = "#006400";
+            canvasCtx.strokeStyle = "#00FF00";
         } else {
             canvasCtx.strokeStyle = "#303030";
         }
@@ -97,11 +112,12 @@ SortManager.prototype.__drawArrayInCanvas =
 
 /**
  * Draw the state, and then delay before the next iteration.
+ * @param {Array} arrDrawSets - Refer to drawState
  * @param {Function} callback
  */
-SortManager.prototype.drawAndDelay = function drawAndDelay(callback) {
+SortManager.prototype.drawAndDelay = function drawAndDelay(arrDrawSets, callback) {
     var delay = this.__timeDelay;
-    this.drawState(function delayedContinue() {
+    this.drawState(arrDrawSets, function delayedContinue() {
         setTimeout(callback, delay);
     });
 }
