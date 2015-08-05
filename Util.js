@@ -10,9 +10,9 @@ var Util = function util() {};
  * @param {int} idxB
  */
 Util.prototype.swap = function swap(dataSet, idxA, idxB) {
-    var temp = dataSet[idxA];
-    dataSet[idxA] = dataSet[idxB];
-    dataSet[idxB] = temp;
+	var temp = dataSet[idxA];
+	dataSet[idxA] = dataSet[idxB];
+	dataSet[idxB] = temp;
 };
 
 /**
@@ -24,14 +24,14 @@ Util.prototype.swap = function swap(dataSet, idxA, idxB) {
  * @return {Object}
  */
 Util.prototype.shallowMerge = function shallowMerge(slave, master) {
-    var result = {};
-    var slaveKeys = Object.keys(slave);
-    var masterKeys = Object.keys(master);
-    for(var idxSlave = slaveKeys.length - 1; idxSlave >= 0; idxSlave--) {
-        result[slaveKeys[idxSlave]] = slave[slaveKeys[idxSlave]];
-    }
-    for(var idxMaster = masterKeys.length - 1; idxMaster >= 0; idxMaster--) {
-        result[masterKeys[idxMaster]] = master[masterKeys[idxMaster]];
-    }
-    return result;
+	var result = {};
+	var slaveKeys = Object.keys(slave);
+	var masterKeys = Object.keys(master);
+	for(var idxSlave = slaveKeys.length - 1; idxSlave >= 0; idxSlave--) {
+		result[slaveKeys[idxSlave]] = slave[slaveKeys[idxSlave]];
+	}
+	for(var idxMaster = masterKeys.length - 1; idxMaster >= 0; idxMaster--) {
+		result[masterKeys[idxMaster]] = master[masterKeys[idxMaster]];
+	}
+	return result;
 };
