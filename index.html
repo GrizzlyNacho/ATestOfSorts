@@ -13,15 +13,29 @@
 			window.onload = function onWindowLoad() {
 				 window.sortInstance = new SortManager();
 			};
+
+			// All of the sorting methods available.
+			window.sortDictionary = {
+				bubble: BubbleSort,
+				insertion: InsertionSort,
+				selection: SelectionSort,
+			};
 		</script>
 	</head>
 
 	<body>
 		<h1>A Test of Sorts</h1>
+
 		<canvas id="sortCanvas" height="500" width="800"></canvas>
-		<button onclick="sortInstance.startSort(BubbleSort)">Bubble</button>
-		<button onclick="sortInstance.startSort(InsertionSort)">Insertion</button>
-		<button onclick="sortInstance.startSort(SelectionSort)">Selection</button>
+		<br/>
+		<select onchange="sortInstance.changeActiveSort(this.value)">
+			<option value="">Select a Sort</option>
+			<option value="bubble">Bubble Sort</option>
+			<option value="insertion">Insertion Sort</option>
+			<option value="selection">Selection Sort</option>
+		</select>
+
+		<button onclick="sortInstance.startSort()">Start Sort</button>
 	</body>
 
 </html>
