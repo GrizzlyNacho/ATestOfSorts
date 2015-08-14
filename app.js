@@ -124,8 +124,18 @@ SortManager.prototype.drawAndDelay = function drawAndDelay(arrDrawSets, callback
 
 /**
  * Initialize and thereby start a sorting method on the current Dataset
- * @param {Function} sortClass
  */
-SortManager.prototype.startSort = function startSort(sortClass) {
-	var sortMethod = new sortClass(this.__numberSet, this.drawAndDelay.bind(this));
+SortManager.prototype.startSort = function startSort() {
+	var sort = new this.__sortMethod(this.__numberSet, this.drawAndDelay.bind(this));
+}
+
+/**
+ * Change the active sorting method
+ * @param {String} sortName
+ */
+SortManager.prototype.changeActiveSort = function changeActiveSort(sortName) {
+	this.__sortMethod = window.sortDictionary[sortName];
+	if (!this.__sortMethod) {
+		console.error("No sort by the name " + sortName + " exists");
+	}
 }
